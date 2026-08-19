@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import joblib
+from collections import deque, Counter
 
 
 # -----------------------------
@@ -26,6 +27,17 @@ GESTURE_NAMES = {
     3: "Peace",
     4: "Pointing",
 }
+
+
+# -----------------------------
+# Prediction smoothing
+# -----------------------------
+
+HISTORY_SIZE = 7
+
+prediction_history = deque(maxlen=HISTORY_SIZE)
+
+stable_prediction = None
 
 
 # -----------------------------
@@ -109,11 +121,13 @@ with HandLandmarker.create_from_options(options) as landmarker:
 
             hand = result.hand_landmarks[0]
 
+
             # Wrist = landmark 0
 
             wrist_x = hand[0].x
             wrist_y = hand[0].y
             wrist_z = hand[0].z
+
 
             features = []
 
@@ -148,10 +162,43 @@ with HandLandmarker.create_from_options(options) as landmarker:
 
             prediction = model.predict(features)[0]
 
-            prediction_text = GESTURE_NAMES.get(
-                int(prediction),
-                str(prediction)
-            )
+
+            # Add prediction to history
+
+            prediction_history.append(int(prediction))
+
+
+            # -----------------------------
+            # Find most common prediction
+            # -----------------------------
+
+            if prediction_history:
+
+                most_common_prediction = Counter(
+                    prediction_history
+                ).most_common(1)[0][0]
+
+                stable_prediction = most_common_prediction
+
+
+            # Convert to readable name
+
+            if stable_prediction is not None:
+
+                prediction_text = GESTURE_NAMES.get(
+                    stable_prediction,
+                    str(stable_prediction)
+                )
+
+
+        else:
+
+            # Clear old predictions when
+            # no hand is visible
+
+            prediction_history.clear()
+
+            stable_prediction = None
 
 
         # -----------------------------
