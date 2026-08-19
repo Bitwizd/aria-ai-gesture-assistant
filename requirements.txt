@@ -8,7 +8,7 @@ fonttools==4.63.0
 joblib==1.5.3
 kiwisolver==1.5.0
 matplotlib==3.11.1
-mediapipe==1.0.1
+mediapipe==0.10.35
 narwhals==2.24.0
 numpy==2.5.2
 opencv-contrib-python==5.0.0.93
