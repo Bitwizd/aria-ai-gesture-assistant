@@ -1,18 +1,7 @@
-# Python virtual environment
 venv/
-
-# Python cache
 __pycache__/
 *.py[cod]
-
-# macOS
 .DS_Store
-
-# Jupyter Notebook checkpoints
 .ipynb_checkpoints/
-
-# Environment variables
 .env
-
-# IDE settings
 .vscode/
