@@ -30,7 +30,9 @@ class ARIACommandEngine:
         elif command == "open terminal":
             self.open_application("Terminal")
             return "Opening Terminal"
-
+        elif command == "open notes":
+             self.open_application("Notes")
+             return "Opening Notes"
         elif command == "close safari":
             self.close_application("Safari")
             return "Closing Safari"
@@ -116,4 +118,3 @@ if __name__ == "__main__":
         response = aria.execute(command)
 
         print("ARIA:", response)
-        

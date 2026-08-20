@@ -74,7 +74,7 @@ with HandLandmarker.create_from_options(options) as landmarker:
     while True:
 
         ret, frame = cap.read()
-        frame = cv2.flip(frame, 1)
+        
         if not ret:
 
             print("ERROR: Could not read frame.")
